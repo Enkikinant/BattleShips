@@ -1,0 +1,26 @@
+all : exec
+
+OBJ = $(SRC: .c=.o)
+SRC = $(wildcard *.c)
+
+
+main.o : main.c battleships.h
+	gcc -c main.c -o main.o
+
+battleships.o : battleships.c battleships.h
+	gcc -c battleships.c -o battleships.o
+
+libDyna.so : battleships.o
+	gcc -shared libDyna.so -o battleships.o
+
+exec : main.o battleships.o
+	gcc  main.o battleships.o -o exec -fsanitize=address
+
+
+debug :
+	@echo $(SRC)
+	@echo $(OBJ)
+clean :
+	rm -f *.o
+	rm -f exec
+
